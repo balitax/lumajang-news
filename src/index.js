@@ -19,6 +19,10 @@ const swaggerOptions = {
     },
     servers: [
       {
+        url: 'https://lumajang-news-production.up.railway.app',
+        description: 'Production server',
+      },
+      {
         url: `http://localhost:${PORT}`,
         description: 'Local server',
       },
