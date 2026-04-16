@@ -29,7 +29,7 @@ const CategoryPage: React.FC = () => {
           getCategories()
         ]);
         setNews(newsRes.data);
-        setPagination(newsRes.pagination);
+        setPagination(newsRes.pagination ?? null);
         setCategories(catRes.data);
         const foundCat = catRes.data.find((c: Category) => c.slug === slug);
         setCategory(foundCat || null);
