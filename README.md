@@ -6,6 +6,7 @@ Portal berita online yang menyajikan informasi terkini dari Kabupaten Lumajang, 
 
 - **Frontend**: https://lumajang-news.vercel.app/
 - **Backend API**: https://lumajang-news-production.up.railway.app/
+- **API Documentation**: https://lumajang-news-production.up.railway.app/api-docs
 
 ## Fitur
 

@@ -229,13 +229,14 @@
 
 .ads-widget .ads-placeholder,
 .ads-widget--vertical .ads-placeholder {
-  background: linear-gradient(135deg, #f5f5f5 0%, #ebebeb 100%);
-  border: 2px dashed #ddd;
+  background: var(--background);
+  border: 2px dashed var(--border);
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 90px;
+  color: var(--text-muted);
 }
 
 .ads-widget .ads-placeholder {
@@ -247,7 +248,6 @@
 }
 
 .ads-placeholder span {
-  color: #999;
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
