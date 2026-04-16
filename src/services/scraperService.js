@@ -22,7 +22,8 @@ class ScraperService {
   async fetchLatestNews() {
     const cacheKey = 'latest_news';
     const cachedData = cache.get(cacheKey);
-    if (cachedData) return cachedData;
+    if (cachedData && cachedData.length > 0) return cachedData;
+    cache.del(cacheKey); // Clear stale cache
 
     try {
       const { data } = await this._fetch(BASE_URL);
@@ -34,7 +35,9 @@ class ScraperService {
         if (item.title) news.push(item);
       });
 
-      cache.set(cacheKey, news);
+      if (news.length > 0) {
+        cache.set(cacheKey, news, 300); // 5 min TTL
+      }
       return news;
     } catch (error) {
       console.error('Error fetching latest news:', error.message);
@@ -63,7 +66,7 @@ class ScraperService {
       const result = { news, pagination };
 
       if (news.length > 0) {
-        cache.set(cacheKey, result, 600);
+        cache.set(cacheKey, result, 180); // 3 min TTL
       }
       return result;
     } catch (error) {
@@ -75,8 +78,8 @@ class ScraperService {
   async fetchArticleDetail(articleUrl) {
     const cacheKey = `article_${articleUrl}`;
     const cachedData = cache.get(cacheKey);
-    // Articles change less frequently, keep them longer (1 hour)
-    if (cachedData) return cachedData;
+    if (cachedData && cachedData.title) return cachedData;
+    cache.del(cacheKey); // Clear stale cache
 
     try {
       const { data } = await this._fetch(articleUrl);
@@ -167,7 +170,8 @@ class ScraperService {
   async fetchCategories() {
     const cacheKey = 'categories';
     const cachedData = cache.get(cacheKey);
-    if (cachedData) return cachedData;
+    if (cachedData && cachedData.length > 0) return cachedData;
+    cache.del(cacheKey); // Clear stale cache
 
     try {
       const { data } = await this._fetch(BASE_URL);
@@ -185,7 +189,9 @@ class ScraperService {
         }
       });
 
-      cache.set(cacheKey, categories, 86400); // 24 hours TTL for categories
+      if (categories.length > 0) {
+        cache.set(cacheKey, categories, 3600); // 1 hour TTL for categories
+      }
       return categories;
     } catch (error) {
       console.error('Error fetching categories:', error.message);
@@ -196,7 +202,8 @@ class ScraperService {
   async searchNews(query, page = 1) {
     const cacheKey = `search_${query}_page_${page}`;
     const cachedData = cache.get(cacheKey);
-    if (cachedData) return cachedData;
+    if (cachedData && cachedData.news && cachedData.news.length > 0) return cachedData;
+    cache.del(cacheKey); // Clear stale cache
 
     try {
       const url = page > 1 ? `${BASE_URL}search/${encodeURIComponent(query)}/${page}` : `${BASE_URL}search/${encodeURIComponent(query)}`;
@@ -212,7 +219,9 @@ class ScraperService {
       const pagination = this._parsePagination($);
       const result = { news, pagination };
 
-      cache.set(cacheKey, result, 300); // 5 minutes TTL for search results
+      if (news.length > 0) {
+        cache.set(cacheKey, result, 180); // 3 minutes TTL for search
+      }
       return result;
     } catch (error) {
       console.error(`Error searching news for ${query} page ${page}:`, error.message);
