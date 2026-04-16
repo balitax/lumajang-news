@@ -2,6 +2,11 @@
 
 Portal berita online yang menyajikan informasi terkini dari Kabupaten Lumajang, Jawa Timur.
 
+## Live Demo
+
+- **Frontend**: https://lumajang-news.vercel.app/
+- **Backend API**: https://lumajang-news-production.up.railway.app/
+
 ## Fitur
 
 - **Beranda** - Headline carousel dengan berita terbaru
